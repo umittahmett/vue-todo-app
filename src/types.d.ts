@@ -2,7 +2,8 @@ export interface TaskProps{
     id: number;
     text: string;
     completed: boolean;
-    createdAt: Date;
-    updatedAt?: Date;
-    completedAt?: Date;
+    createdAt: string;
+    updatedAt?: string;
+    completedAt?: string;
+    onDelete?: () => void;
 }
