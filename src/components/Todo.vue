@@ -1,33 +1,43 @@
 <template>
-  <div class="p-4 rounded-lg flex w-full justify-between items-start gap-5 bg-zinc-800 ">
-    <div class="inline-flex items-center">
-      <div class="flex items-center cursor-pointer relative">
-        <input
-          class=" border-[#4EA8DE] accent-[#4EA8DE] peer size-5 cursor-pointer transition-all appearance-none rounded-full border checked:bg-[#8284FA] checked:border-[#8284FA]"
-          :checked="completed" type="checkbox" />
-        <div
-          class="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <CheckIcon class="size-4 text-white" />
+  <div class="p-4 pb-2 rounded-lg w-full bg-zinc-800 ">
+    <div class="flex justify-between items-start gap-5">
+      <div class="inline-flex items-center">
+        <div class="flex items-center cursor-pointer relative">
+          <input
+            class=" border-[#4EA8DE] accent-[#4EA8DE] peer size-5 cursor-pointer transition-all appearance-none rounded-full border checked:bg-[#8284FA] checked:border-[#8284FA]"
+            :checked="completed" type="checkbox" />
+          <div
+            class="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <CheckIcon class="size-4 text-white" />
+          </div>
         </div>
       </div>
+
+      <p :class="clsx('text-zinc-100 w-full text-start', completed && 'line-through text-zinc-500')">
+        {{ text }}
+      </p>
+
+      <button class="text-zinc-400 hover:text-white duration-200">
+        <Trash2 class="size-5" />
+      </button>
     </div>
-
-    <p :class="clsx('text-zinc-100 w-full text-start', completed && 'line-through text-zinc-500')">
-      {{ text }}
-    </p>
-
-    <button class="text-zinc-400 hover:text-white duration-200">
-      <Trash2 class="size-5" />
-    </button>
+    <div class="flex items-center justify-between pt-4 text-zinc-400 text-xs">
+      <div>
+        Created at: {{ new Date(createdAt).toDateString() }}
+      </div>
+      <div v-if="completedAt || updatedAt">
+        {{ completed ? 'Completed at:' : 'Updated at:' }} {{ completed ? completedAt?.toDateString() :
+          updatedAt?.toDateString() }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps({
-  text: String,
-  completed: Boolean,
-});
+import type { TaskProps } from '@/types';
 import clsx from 'clsx';
 import { CheckIcon, Trash2 } from 'lucide-vue-next';
+
+defineProps<TaskProps>();
 
 </script>

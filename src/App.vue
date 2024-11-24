@@ -35,9 +35,8 @@
 
       <!-- Task List -->
       <div class="space-y-3 mt-6">
-        <Todo v-for="task in tasks" :key="task.id"
-          :text="'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis iusto, quo recusandae ab temporibus dicta id cumque enim voluptatem molestias voluptatibus aperiam culpa ea deleniti repudiandae? Culpa aut debitis molestias.'"
-          :completed="false" />
+        <Todo v-for="task in tasks" :key="task.id" :id="task.id" :text="task.text" :completed="task.completed"
+          :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt" />
 
         <div class="flex flex-col items-center py-10 space-y-6 text-center" v-if="tasks.length === 0">
           <img :src="ClipboardImage" alt="Empty" class="size-24 object-cover" />
@@ -67,7 +66,10 @@ const onSubmit = (e: any) => {
   tasks.value.push({
     id: tasks.value.length + 1,
     text: newTask.value,
-    completed: true
+    completed: true,
+    createdAt: new Date(),
+    completedAt: undefined,
+    updatedAt: undefined
   });
   newTask.value = '';
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
@@ -79,5 +81,7 @@ onMounted(() => {
     tasks.value = JSON.parse(data)
     completedTasks.value = tasks.value.filter(task => task.completed).length || 0;
   }
+  console.log(data);
+
 })
 </script>
