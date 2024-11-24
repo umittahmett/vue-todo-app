@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.default-container{
+    @apply max-w-7xl w-full mx-auto px-6 sm:px-8;
+}
