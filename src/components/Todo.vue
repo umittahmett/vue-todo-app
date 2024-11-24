@@ -17,7 +17,7 @@
         {{ text }}
       </p>
 
-      <button class="text-zinc-400 hover:text-white duration-200">
+      <button @click="onDelete" class="text-zinc-400 hover:text-white duration-200">
         <Trash2 class="size-5" />
       </button>
     </div>
@@ -26,8 +26,9 @@
         Created at: {{ new Date(createdAt).toDateString() }}
       </div>
       <div v-if="completedAt || updatedAt">
-        {{ completed ? 'Completed at:' : 'Updated at:' }} {{ completed ? completedAt?.toDateString() :
-          updatedAt?.toDateString() }}
+        {{ completed ? 'Completed at:' : 'Updated at:' }} {{ completed ? new Date(completedAt as string).toDateString()
+          :
+          new Date(updatedAt as string).toDateString() }}
       </div>
     </div>
   </div>
@@ -39,5 +40,4 @@ import clsx from 'clsx';
 import { CheckIcon, Trash2 } from 'lucide-vue-next';
 
 defineProps<TaskProps>();
-
 </script>

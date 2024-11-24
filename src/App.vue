@@ -9,11 +9,11 @@
 
     <div class="default-container">
       <!-- Add Task -->
-      <form @submit="onSubmit" class="flex items-center gap-2 relative bottom-[30px]">
-        <input v-model="newTask"
+      <form @submit="onSubmit" id="add-task-form" class="flex items-center gap-2 relative bottom-[30px]">
+        <input v-model="newTask" id="task" name="task"
           class="w-full py-4 px-6 rounded-lg bg-zinc-800 text-white outline-none focus:outline-none ring-0 focus:ring-0"
           type="text" placeholder="Add a new task">
-        <button :disabled="!newTask" type="submit"
+        <button id="add-task" name="add-tasks" :disabled="!newTask" type="submit"
           class="p-4 disabled:opacity-80 rounded-lg text-white flex items-center gap-2 bg-[#4EA8DE]">
           Add
           <PlusCircle class="text-white size-4" />
@@ -36,7 +36,8 @@
       <!-- Task List -->
       <div class="space-y-3 mt-6">
         <Todo v-for="task in tasks" :key="task.id" :id="task.id" :text="task.text" :completed="task.completed"
-          :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt" />
+          :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt"
+          :onDelete="() => deleteTask(task.id)" />
 
         <div class="flex flex-col items-center py-10 space-y-6 text-center" v-if="tasks.length === 0">
           <img :src="ClipboardImage" alt="Empty" class="size-24 object-cover" />
@@ -53,7 +54,7 @@
 <script setup lang="ts">
 import { PlusCircle } from 'lucide-vue-next';
 import Todo from '@/components/Todo.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import type { TaskProps } from '@/types';
 import ClipboardImage from '@/assets/clipboard.png'
 
@@ -66,8 +67,8 @@ const onSubmit = (e: any) => {
   tasks.value.push({
     id: tasks.value.length + 1,
     text: newTask.value,
-    completed: true,
-    createdAt: new Date(),
+    completed: false,
+    createdAt: new Date().toString(),
     completedAt: undefined,
     updatedAt: undefined
   });
@@ -75,13 +76,17 @@ const onSubmit = (e: any) => {
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 }
 
+const deleteTask = (id: number) => {
+  tasks.value = tasks.value.filter((task) => task.id !== id);
+  completedTasks.value = tasks.value.filter((task) => task.completed).length || 0;
+  localStorage.setItem('tasks', JSON.stringify(tasks.value));
+};
+
 onMounted(() => {
   let data = localStorage.getItem('tasks')
   if (data) {
     tasks.value = JSON.parse(data)
     completedTasks.value = tasks.value.filter(task => task.completed).length || 0;
   }
-  console.log(data);
-
 })
 </script>
