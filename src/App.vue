@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-900 h-dvh">
+  <div class="bg-zinc-900 h-full min-h-screen">
     <!-- Hero -->
     <div class="w-full h-[20dvh] bg-black flex items-center justify-center pb-[30px]">
       <h1 class="font-extrabold text-6xl text-white text-center">
@@ -9,15 +9,16 @@
 
     <div class="default-container">
       <!-- Add Task -->
-      <div class="flex items-center gap-2 relative bottom-[30px]">
-        <input
+      <form @submit="onSubmit" class="flex items-center gap-2 relative bottom-[30px]">
+        <input v-model="newTask"
           class="w-full py-4 px-6 rounded-lg bg-zinc-800 text-white outline-none focus:outline-none ring-0 focus:ring-0"
           type="text" placeholder="Add a new task">
-        <button class="p-4 rounded-lg text-white flex items-center gap-2 bg-[#4EA8DE]">
+        <button :disabled="!newTask" type="submit"
+          class="p-4 disabled:opacity-80 rounded-lg text-white flex items-center gap-2 bg-[#4EA8DE]">
           Add
           <PlusCircle class="text-white size-4" />
         </button>
-      </div>
+      </form>
 
       <!-- Tasks -->
       <div class="flex items-center justify-between gap-6 mt-12">
@@ -59,12 +60,24 @@ import ClipboardImage from '@/assets/clipboard.png'
 
 const tasks = ref<TaskProps[]>([]);
 const completedTasks = ref<number>(0);
+const newTask = ref<string>('');
+
+const onSubmit = (e: any) => {
+  e.preventDefault();
+  tasks.value.push({
+    id: tasks.value.length + 1,
+    text: newTask.value,
+    completed: true
+  });
+  newTask.value = '';
+  localStorage.setItem('tasks', JSON.stringify(tasks.value));
+}
 
 onMounted(() => {
   let data = localStorage.getItem('tasks')
   if (data) {
     tasks.value = JSON.parse(data)
-    tasks.value.filter(task => task.completed) || 0;
+    completedTasks.value = tasks.value.filter(task => task.completed).length || 0;
   }
 })
 </script>
