@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { PlusCircle } from 'lucide-vue-next';
 import Todo from '@/components/Todo.vue';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import type { TaskProps } from '@/types';
 import ClipboardImage from '@/assets/clipboard.png'
 
@@ -68,7 +68,7 @@ const onSubmit = (e: any) => {
     id: tasks.value.length + 1,
     text: newTask.value,
     completed: false,
-    createdAt: new Date().toString(),
+    createdAt: new Date().getTime(),
     completedAt: undefined,
     updatedAt: undefined
   });
@@ -76,8 +76,23 @@ const onSubmit = (e: any) => {
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 }
 
-watch(tasks, (newTasks) => {
-  completedTasks.value = newTasks.filter(task => task.completed).length || 0;
+watchEffect(() => {
+  completedTasks.value = tasks.value.filter(task => task.completed).length || 0;
+  tasks.value.sort((a, b) => {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+
+    if (!a.completed && !b.completed) {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+
+    if (a.completed && b.completed) {
+      return new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime();
+    }
+
+    return 0;
+  });
 })
 
 const deleteTask = (id: number) => {
@@ -86,10 +101,9 @@ const deleteTask = (id: number) => {
 };
 
 const onCheckedChange = (id: number, checked: boolean) => {
-  tasks.value = tasks.value.map((task) => id === task.id && task.completed === checked ? { ...task, completed: !checked, completedAt: !checked ? new Date().toString() : undefined } : task);
+  tasks.value = tasks.value.map((task) => id === task.id && task.completed === checked ? { ...task, completed: !checked, completedAt: !checked ? new Date().getTime() : undefined } : task);
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 };
-
 
 onMounted(() => {
   let data = localStorage.getItem('tasks')

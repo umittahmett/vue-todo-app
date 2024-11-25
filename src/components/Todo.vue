@@ -26,9 +26,9 @@
         Created at: {{ new Date(createdAt).toDateString() }}
       </div>
       <div v-if="completedAt || updatedAt">
-        {{ completed ? 'Completed at:' : 'Updated at:' }} {{ completed ? new Date(completedAt as string).toDateString()
+        {{ completed ? 'Completed at:' : 'Updated at:' }} {{ completed ? new Date(completedAt as number).toDateString()
           :
-          new Date(updatedAt as string).toDateString() }}
+          new Date(updatedAt as number).toDateString() }}
       </div>
     </div>
   </div>
