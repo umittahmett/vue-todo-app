@@ -21,7 +21,7 @@
       </form>
 
       <!-- Tasks -->
-      <div class="flex items-center justify-between gap-6 mt-12">
+      <div class="flex items-center justify-between gap-6 mt-4 pt-8 border-t border-zinc-700">
         <div class="flex items-center gap-2">
           <span class="text-[#4EA8DE] font-bold">Tasks created</span>
           <span class="rounded-full text-white bg-zinc-800 px-2 py-1 text-sm font-bold">{{ tasks.length || 0 }}</span>
