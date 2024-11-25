@@ -76,9 +76,12 @@ const onSubmit = (e: any) => {
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 }
 
+watch(tasks, (newTasks) => {
+  completedTasks.value = newTasks.filter(task => task.completed).length || 0;
+})
+
 const deleteTask = (id: number) => {
   tasks.value = tasks.value.filter((task) => task.id !== id);
-  completedTasks.value = tasks.value.filter((task) => task.completed).length || 0;
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 };
 
@@ -92,7 +95,6 @@ onMounted(() => {
   let data = localStorage.getItem('tasks')
   if (data) {
     tasks.value = JSON.parse(data)
-    completedTasks.value = tasks.value.filter(task => task.completed).length || 0;
   }
 })
 </script>
