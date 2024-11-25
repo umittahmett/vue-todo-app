@@ -6,4 +6,5 @@ export interface TaskProps{
     updatedAt?: string;
     completedAt?: string;
     onDelete?: () => void;
+    onCheckedChange?: () => void;
 }
