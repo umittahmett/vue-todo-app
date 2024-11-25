@@ -37,7 +37,8 @@
       <div class="space-y-3 mt-6">
         <Todo v-for="task in tasks" :key="task.id" :id="task.id" :text="task.text" :completed="task.completed"
           :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt"
-          :onDelete="() => deleteTask(task.id)" :onCheckedChange="() => onCheckedChange(task.id, task.completed)" />
+          :onDelete="() => deleteTask(task.id)" :onCheckedChange="() => onCheckedChange(task.id, task.completed)"
+          :onEdit="onEdit" />
 
         <div class="flex flex-col items-center py-10 space-y-6 text-center" v-if="tasks.length === 0">
           <img :src="ClipboardImage" alt="Empty" class="size-24 object-cover" />
@@ -102,6 +103,11 @@ const deleteTask = (id: number) => {
 
 const onCheckedChange = (id: number, checked: boolean) => {
   tasks.value = tasks.value.map((task) => id === task.id && task.completed === checked ? { ...task, completed: !checked, completedAt: !checked ? new Date().getTime() : undefined } : task);
+  localStorage.setItem('tasks', JSON.stringify(tasks.value));
+};
+
+const onEdit = (id: number, newText: string) => {
+  tasks.value = tasks.value.map((task) => id === task.id ? { ...task, text: newText, updatedAt: new Date().getTime() } : task);
   localStorage.setItem('tasks', JSON.stringify(tasks.value));
 };
 

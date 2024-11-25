@@ -7,4 +7,5 @@ export interface TaskProps{
     completedAt?: number;
     onDelete?: () => void;
     onCheckedChange?: () => void;
+    onEdit?: (id: number, newText:string) => void;
 }
