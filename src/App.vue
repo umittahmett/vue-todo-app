@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-900 h-full min-h-screen">
+  <div class="bg-zinc-900 h-screen">
     <!-- Hero -->
     <div class="w-full h-[20dvh] bg-black flex items-center justify-center pb-[30px]">
       <h1 class="font-extrabold text-6xl text-white text-center">
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Task List -->
-      <div class="space-y-3 mt-6">
+      <div class="space-y-3 mt-6 rounded-lg overflow-y-scroll h-full pr-2" style="max-height: calc(100dvh - 40dvh);">
         <Todo v-for="task in tasks" :key="task.id" :id="task.id" :text="task.text" :completed="task.completed"
           :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt"
           :onDelete="() => deleteTask(task.id)" :onCheckedChange="() => onCheckedChange(task.id, task.completed)"

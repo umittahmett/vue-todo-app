@@ -5,3 +5,12 @@
 .default-container{
     @apply max-w-7xl w-full mx-auto px-6 sm:px-8;
 }
+
+::-webkit-scrollbar{
+    width: 2px;
+    background: #3f3f46;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #4EA8DE;
+}
