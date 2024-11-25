@@ -34,7 +34,7 @@
       </div>
 
       <!-- Task List -->
-      <div class="space-y-3 mt-6 rounded-lg overflow-y-scroll h-full pr-2" style="max-height: calc(100dvh - 40dvh);">
+      <div class="space-y-3 mt-6 rounded-lg overflow-y-auto h-full pr-2" style="max-height: calc(100dvh - 40dvh);">
         <Todo v-for="task in tasks" :key="task.id" :id="task.id" :text="task.text" :completed="task.completed"
           :createdAt="task.createdAt" :completedAt="task.completedAt" :updatedAt="task.updatedAt"
           :onDelete="() => deleteTask(task.id)" :onCheckedChange="() => onCheckedChange(task.id, task.completed)"
